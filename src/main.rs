@@ -1,4 +1,3 @@
-//main.rs 
 mod graph;
 mod stats;
 
@@ -13,14 +12,19 @@ use stats::parse_year_from_date;
 
 
 fn main() -> Result<(), Box<dyn Error>> {
-
-
    let mut graph = LayoffsGraph::new();
   
    let path = Path::new("layoffs(1).csv");
    let file = File::open(&path)?;
    let reader = io::BufReader::new(file);
 
+   let adjacency_list = graph.to_adjacency_list();
+    for (industry, connections) in &adjacency_list {
+        println!("Industry: {}", industry);
+        for (company, layoffs) in connections {
+            println!("   Company: {}, Layoffs: {}", company, layoffs);
+        }
+    }
 
    for (line_number, line) in reader.lines().enumerate().skip(1) {
        let line = line?;
@@ -29,7 +33,6 @@ fn main() -> Result<(), Box<dyn Error>> {
            eprintln!("Invalid format in line {}: {}", line_number + 1, line);
            continue;
        }
-
 
        let company = parts[0].to_string();
        let industry = parts[1].to_string();
@@ -64,11 +67,14 @@ fn main() -> Result<(), Box<dyn Error>> {
    for (year, average) in average_layoffs {
        println!("Year {}: {:.2}", year, average);
    }
+   println!("-------------------");
+   let centrality = graph.calculate_degree_centrality();
 
+    println!("Degree Centrality for each industry:");
+    for (industry, degree) in centrality {
+        println!("Industry: {}, Degree: {}", industry, degree);
+    }
 
    Ok(())
-
-
-
-
 }
+

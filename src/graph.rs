@@ -1,3 +1,5 @@
+//graph 
+
 //graph.rs 
 use std::collections::{HashMap, HashSet};
 use crate::stats::calculate_median;
@@ -25,6 +27,34 @@ impl LayoffsGraph {
            .insert(company.clone());
        self.company_layoffs.insert(company, (layoffs, year));
    }
+
+   pub fn to_adjacency_list(&self) -> HashMap<String, Vec<(String, u32)>> {
+    let mut adjacency_list = HashMap::new();
+
+    // Populate adjacency list with industries and their connected companies
+    for (industry, companies) in &self.industries {
+        let mut connections = vec![];
+        for company in companies {
+            if let Some(&(layoffs, _)) = self.company_layoffs.get(company) {
+                connections.push((company.clone(), layoffs));
+            }
+        }
+        adjacency_list.insert(industry.clone(), connections);
+    }
+
+    adjacency_list
+}
+
+
+
+   pub fn calculate_degree_centrality(&self) -> HashMap<String, usize> {
+    let mut centrality = HashMap::new();
+    for (industry, companies) in &self.industries {
+        centrality.insert(industry.clone(), companies.len());
+    }
+    centrality
+}
+
 
 
    pub fn get_industry_summary(&self) -> HashMap<String, (usize, u32, f32, f32)> {
@@ -167,6 +197,8 @@ impl LayoffsGraph {
        }
        industry_std_deviations
    }
+
+   
 }
 
 
@@ -195,4 +227,5 @@ mod test {
         assert_eq!(graph.company_layoffs.get(&company_name).unwrap(), &(layoffs, year));
     }
 }
+
 
