@@ -1,15 +1,10 @@
-//graph 
-
-//graph.rs 
 use std::collections::{HashMap, HashSet};
-use crate::stats::calculate_median;
-
+use crate::utils::calculate_median;
 
 pub struct LayoffsGraph {
    pub industries: HashMap<String, HashSet<String>>,
    pub company_layoffs: HashMap<String, (u32, u32)>,
 }
-
 
 impl LayoffsGraph {
    pub fn new() -> Self {
@@ -18,7 +13,6 @@ impl LayoffsGraph {
            company_layoffs: HashMap::new(),
        }
    }
-
 
    pub fn add_company(&mut self, company: String, industry: String, year: u32, layoffs: u32) {
        self.industries
@@ -45,8 +39,6 @@ impl LayoffsGraph {
     adjacency_list
 }
 
-
-
    pub fn calculate_degree_centrality(&self) -> HashMap<String, usize> {
     let mut centrality = HashMap::new();
     for (industry, companies) in &self.industries {
@@ -54,7 +46,6 @@ impl LayoffsGraph {
     }
     centrality
 }
-
 
 
    pub fn get_industry_summary(&self) -> HashMap<String, (usize, u32, f32, f32)> {
@@ -99,6 +90,7 @@ impl LayoffsGraph {
        summary
    }
 
+//statistics 
 
    pub fn average_layoffs_per_year(&self) -> HashMap<u32, f32> {
        let mut total_layoffs_per_year = HashMap::new();
@@ -113,11 +105,8 @@ impl LayoffsGraph {
            }
        }
 
-
        let num_years = total_layoffs_per_year.len() as f32;
        let overall_average = if num_years > 0.0 { total_layoffs as f32 / num_years } else { 0.0 };
-  
-
 
        let mut average_layoffs_per_year = HashMap::new();
        for (&year, &layoffs) in &total_layoffs_per_year {
@@ -201,11 +190,11 @@ impl LayoffsGraph {
    
 }
 
-
-// test 
 #[cfg(test)]
 mod test {
     use super::*; // Import everything from the parent module
+
+
 
     #[test]
     fn test_add_company() {
@@ -227,5 +216,3 @@ mod test {
         assert_eq!(graph.company_layoffs.get(&company_name).unwrap(), &(layoffs, year));
     }
 }
-
-

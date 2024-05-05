@@ -1,6 +1,5 @@
 mod graph;
-mod stats;
-
+mod utils;
 
 use std::error::Error;
 use std::fs::File;
@@ -8,7 +7,7 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 use graph::LayoffsGraph;
-use stats::parse_year_from_date;
+use utils::parse_year_from_date;
 
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -41,17 +40,15 @@ fn main() -> Result<(), Box<dyn Error>> {
        graph.add_company(company, industry, year, layoffs);
    }
 
-
    let summaries = graph.get_industry_summary();
    let median_layoffs = graph.calculate_median_per_industry(&graph.industries);
    let mode_layoffs = graph.calculate_mode_per_industry(&graph.industries);
    let stddev_layoffs = graph.calculate_std_deviation_per_industry(&graph.industries);
 
-
    for (industry, (num_companies, total_layoffs, avg_layoffs, _)) in summaries {
        println!("-------------------");
        println!("Industry: {}", industry);
-       println!("Number of companies: {}", num_companies);
+       //println!("Number of companies: {}", num_companies);
        println!("Total number of layoffs: {}", total_layoffs);
        println!("Average number of layoffs per company: {:.2}", avg_layoffs);
        println!("Median layoffs: {:.2}", median_layoffs.get(&industry).unwrap_or(&0.0));
@@ -59,7 +56,6 @@ fn main() -> Result<(), Box<dyn Error>> {
        println!("Standard deviation of layoffs: {:.2}", stddev_layoffs.get(&industry).unwrap_or(&0.0));
    }
    println!("-------------------");
-
 
    // Print average layoffs per year
    let average_layoffs = graph.average_layoffs_per_year();
@@ -72,9 +68,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Degree Centrality for each industry:");
     for (industry, degree) in centrality {
-        println!("Industry: {}, Degree: {}", industry, degree);
+        println!("Industry: {}, Degree (Number of Companies): {}", industry, degree);
     }
 
    Ok(())
 }
-

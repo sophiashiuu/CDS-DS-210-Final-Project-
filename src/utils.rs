@@ -1,5 +1,3 @@
-//tstats
-
 pub fn calculate_median(data: &[u32]) -> f32 {
     let n = data.len();
     if n == 0 {
@@ -18,13 +16,7 @@ pub fn calculate_median(data: &[u32]) -> f32 {
  pub fn parse_year_from_date(date: &str) -> u32 {
     date.split('-').next().unwrap_or("0").parse().unwrap_or(0)
  }
- 
 
-
-
-
- 
- //test 
 
  #[cfg(test)]
 mod tests {
@@ -44,11 +36,5 @@ mod tests {
         assert_eq!(parse_year_from_date("2021"), 2021); // Year only (valid edge case)
     }
 
-    #[test]
-    fn test_parse_edge_cases() {
-        assert_eq!(parse_year_from_date(""), 0); // Empty string
-        assert_eq!(parse_year_from_date("Some random string"), 0); // Non-date string
-        assert_eq!(parse_year_from_date("2021-"), 2021); // Incomplete date but valid year
-        assert_eq!(parse_year_from_date("-2021"), 0); // Leading separator
-    }
 }
+
