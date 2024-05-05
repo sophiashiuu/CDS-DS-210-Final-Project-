@@ -15,7 +15,6 @@ pub fn calculate_median(data: &[u32]) -> f32 {
  
  
  
- 
  pub fn parse_year_from_date(date: &str) -> u32 {
     date.split('-').next().unwrap_or("0").parse().unwrap_or(0)
  }

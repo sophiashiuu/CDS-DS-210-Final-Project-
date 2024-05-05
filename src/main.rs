@@ -8,7 +8,6 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
-
 use graph::LayoffsGraph;
 use stats::parse_year_from_date;
 

@@ -195,3 +195,4 @@ mod test {
         assert_eq!(graph.company_layoffs.get(&company_name).unwrap(), &(layoffs, year));
     }
 }
+
